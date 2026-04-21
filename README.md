@@ -6,7 +6,9 @@ I wanted the developers of "Mount&amp;Blade Warband" to be able to easily add so
 
 ------
 
-[TOC]
+- [新加点系统（NewAutoAddPointSystem）](#新加点系统（NewAutoAddPointSystem）)
+
+
 
 
 
