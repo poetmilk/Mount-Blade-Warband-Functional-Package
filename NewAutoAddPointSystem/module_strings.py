@@ -126,6 +126,7 @@
 ("auto_reg10", "{reg10}"),
 ("auto_reg0", "{reg0}"),
 ("auto_reg11_reg10_reg12", "{!}{reg11}({reg10}+{reg12})"),
+("auto_sub_reg11_reg10_reg12", "{!}{reg11}({reg10}-{reg12})"),
 ("auto_reg10_simple", "{!}{reg10}"),
 ("auto_s1_s2", "{s1}^^{s2}"),
 ("auto_plus", "+"),

@@ -1,4 +1,3 @@
-
 # 新加点系统初始化参数
 ("init_new_game_character_system",
 [
@@ -972,6 +971,170 @@
 ]), 
 
 # ==============================================
+# 脚本功能：获取某项技能的最高等级
+# 入参1：需要查询的技能ID
+# 出参：返回值存入 reg0，为该技能的最高等级
+# ==============================================
+("auto_get_skill_max_level",
+[
+    (store_script_param, ":skill_id", 1),
+    (store_add, ":slot_trp_auto_1931", "$g_pm_auto_point_base_slot_part", 131), # 铁 骨 1931
+    (store_add, ":slot_trp_auto_1932", "$g_pm_auto_point_base_slot_part", 132), # 强 击 1932
+    (store_add, ":slot_trp_auto_1933", "$g_pm_auto_point_base_slot_part", 133), # 强 掷 1933
+    (store_add, ":slot_trp_auto_1934", "$g_pm_auto_point_base_slot_part", 134), # 强 弓 1934
+    (store_add, ":slot_trp_auto_1935", "$g_pm_auto_point_base_slot_part", 135), # 武 器 掌 握 1935
+    (store_add, ":slot_trp_auto_1936", "$g_pm_auto_point_base_slot_part", 136), # 盾 防 1936
+    (store_add, ":slot_trp_auto_1937", "$g_pm_auto_point_base_slot_part", 137), # 跑 动 1937
+    (store_add, ":slot_trp_auto_1938", "$g_pm_auto_point_base_slot_part", 138), # 骑 术 1938
+    (store_add, ":slot_trp_auto_1939", "$g_pm_auto_point_base_slot_part", 139), # 骑 射 1939
+    (store_add, ":slot_trp_auto_1940", "$g_pm_auto_point_base_slot_part", 140), # 掠 夺 1940
+    (store_add, ":slot_trp_auto_1941", "$g_pm_auto_point_base_slot_part", 141), # 教 练 1941
+    (store_add, ":slot_trp_auto_1942", "$g_pm_auto_point_base_slot_part", 142), # 追 踪 1942
+    (store_add, ":slot_trp_auto_1943", "$g_pm_auto_point_base_slot_part", 143), # 战 术 1943
+    (store_add, ":slot_trp_auto_1944", "$g_pm_auto_point_base_slot_part", 144), # 向 导 1944
+    (store_add, ":slot_trp_auto_1945", "$g_pm_auto_point_base_slot_part", 145), # 侦 察 1945
+    (store_add, ":slot_trp_auto_1946", "$g_pm_auto_point_base_slot_part", 146), # 辎 重 管 理 1946
+    (store_add, ":slot_trp_auto_1947", "$g_pm_auto_point_base_slot_part", 147), # 疗 伤 1947
+    (store_add, ":slot_trp_auto_1948", "$g_pm_auto_point_base_slot_part", 148), # 手 术 1948
+    (store_add, ":slot_trp_auto_1949", "$g_pm_auto_point_base_slot_part", 149), # 急 救 1949
+    (store_add, ":slot_trp_auto_1950", "$g_pm_auto_point_base_slot_part", 150), # 工 程 学 1950
+    (store_add, ":slot_trp_auto_1951", "$g_pm_auto_point_base_slot_part", 151), # 说 服 力 1951
+    (store_add, ":slot_trp_auto_1952", "$g_pm_auto_point_base_slot_part", 152), # 俘 虏 管 理 1952
+    (store_add, ":slot_trp_auto_1953", "$g_pm_auto_point_base_slot_part", 153), # 统 御 1953
+    (store_add, ":slot_trp_auto_1954", "$g_pm_auto_point_base_slot_part", 154), # 交 易 1954 
+    (assign, ":skill_limit", 0),  # 需要赋值的最大的技能值
+    (try_begin), # 铁骨-力量 
+        (eq, ":skill_id", "skl_ironflesh"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1931"), # 获取铁骨上限值 
+    (else_try), # 强击-力量 
+        (eq, ":skill_id", "skl_power_strike"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1932"), # 获取强击上限值 
+    (else_try), # 强制-力量 
+        (eq, ":skill_id", "skl_power_throw"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1933"), # 获取上限值 
+    (else_try), # 强弓-力量 
+        (eq, ":skill_id", "skl_power_draw"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1934"), # 获取上限值 
+    (else_try), # 武器掌握-敏捷 
+        (eq, ":skill_id", "skl_weapon_master"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1935"), # 获取上限值 
+    (else_try), # 盾防-敏捷 
+        (eq, ":skill_id", "skl_shield"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1936"), # 获取上限值 
+    (else_try), # 跑动-敏捷 
+        (eq, ":skill_id", "skl_athletics"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1937"), # 获取上限值 
+    (else_try), # 骑术-敏捷 
+        (eq, ":skill_id", "skl_riding"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1938"), # 获取上限值 
+    (else_try), # 骑射-敏捷 
+        (eq, ":skill_id", "skl_horse_archery"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1939"), # 获取上限值 
+    (else_try), # 掠夺-敏捷 
+        (eq, ":skill_id", "skl_looting"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1940"), # 获取上限值 
+    (else_try), # 教练-智力 
+        (eq, ":skill_id", "skl_trainer"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1941"), # 获取上限值 
+    (else_try), # 追踪和狩猎-智力 
+        (eq, ":skill_id", "skl_tracking"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1942"), # 获取上限值 
+    (else_try), # 战术-智力 
+        (eq, ":skill_id", "skl_tactics"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1943"), # 获取上限值 
+    (else_try), # 向导-智力 
+        (eq, ":skill_id", "skl_pathfinding"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1944"), # 获取上限值 
+    (else_try), # 侦察-智力 
+        (eq, ":skill_id", "skl_spotting"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1945"), # 获取上限值 
+    (else_try), # 辎重管理-智力 
+        (eq, ":skill_id", "skl_inventory_management"),  
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1946"), # 获取上限值 
+    (else_try), # 疗伤-智力 
+        (eq, ":skill_id", "skl_wound_treatment"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1947"), # 获取上限值 
+    (else_try), # 手术-智力 
+        (eq, ":skill_id", "skl_surgery"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1948"), # 获取上限值 
+    (else_try), # 急救-智力 
+        (eq, ":skill_id", "skl_first_aid"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1949"), # 获取上限值 
+    (else_try), # 工程学-智力 
+        (eq, ":skill_id", "skl_engineer"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1950"), # 获取上限值 
+    (else_try), # 说服力-魅力
+        (eq, ":skill_id", "skl_persuasion"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1951"), # 获取上限值 
+    (else_try), # 俘虏管理-魅力
+        (eq, ":skill_id", "skl_prisoner_management"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1952"), # 获取上限值 
+    (else_try), # 统御-魅力
+        (eq, ":skill_id", "skl_leadership"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1953"), # 获取上限值 
+    (else_try), # 交易-魅力
+        (eq, ":skill_id", "skl_trade"), 
+        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1954"), # 获取上限值 
+    (try_end),
+    (assign, reg0, ":skill_limit"),  # 返回值赋值
+
+]),
+# ==============================================
+# 脚本功能：获取部队/英雄某项技能的实际等级
+# 入参1：目标部队/英雄ID
+# 入参2：需要查询的技能ID
+# 出参：返回值存入 reg0，为该技能的实际等级
+# ==============================================
+("auto_get_troop_skill_real_level",
+[
+   # 读取三个参数
+    (store_script_param, ":troop", 1),
+    (store_script_param, ":skill_id", 2),
+
+    (store_skill_level, ":curr_skill", ":skill_id", ":troop"), # 获取技能等级 
+    # 通过计算额外获得或减少的，计算实际的技能点为多少
+    (call_script, "script_game_get_skill_modifier_for_troop", ":troop", ":skill_id"),  # 调用获取额外技能点的脚本 
+    (assign, ":skill_modifier_value", reg0),  # 获取额外技能点的值 
+
+    # 获取技能上限值  
+    (call_script, "script_auto_get_skill_max_level", ":skill_id"),  
+    (assign, ":skill_limit", reg0), # 赋值给skill_limit
+
+    # 存储返回值-真实的技能等级
+    (assign, ":skill_real_level", ":curr_skill"),
+
+    (try_begin), # 如果技能等级为满级,并且额外技能点为正的，获取真实点数
+        (eq, ":curr_skill", ":skill_limit"),
+        (gt, ":skill_modifier_value", 0),  # 处理大于0的正向技能加成
+        # 反向加点获取实际的技能点数
+        (store_sub, ":neg_skill_modifier_value", 0, ":skill_modifier_value"),
+        (troop_raise_skill, ":troop", ":skill_id", ":neg_skill_modifier_value"),  # 故意减少
+        (store_skill_level, ":skill_real_level", ":skill_id", ":troop"), # 再获取技能等级，此时的技能点数就是真实的点数了 
+        (troop_raise_skill, ":troop", ":skill_id", ":skill_modifier_value"),  # 把故意减少的加回去
+    (else_try),
+        # 如果技能等级为0.则需要判断是否是负重惩罚导致的
+        (lt, ":skill_modifier_value", 0),  # 处理小于0的负向技能加成
+        # 反向加点获取实际的技能点数
+        (store_sub, ":neg_skill_modifier_value", 0, ":skill_modifier_value"),
+        (troop_raise_skill, ":troop", ":skill_id", ":neg_skill_modifier_value"),  # 故意增加
+        (store_skill_level, ":skill_real_level", ":skill_id", ":troop"), # 再获取技能等级，此时的技能点数就是真实的点数了 
+        (troop_raise_skill, ":troop", ":skill_id", ":skill_modifier_value"),  # 把故意增加的减回去
+    (else_try),
+        (neg|eq, ":curr_skill", ":skill_limit"),   # 如果技能等级不为满级，则正常进行获取真实点数
+        (store_sub, ":skill_real_level", ":curr_skill", ":skill_modifier_value"),
+        (try_begin),  # 如果技能等级小于0，则取0
+            (lt, ":skill_real_level", 0),
+            (assign, ":skill_real_level", 0),
+        (else_try),  # 如果技能等级大于最大值，则取最大值
+            (gt, ":skill_real_level", ":skill_limit"),
+            (assign, ":skill_real_level", ":skill_limit"), 
+        (try_end),
+    (try_end),
+    
+    (assign, reg0, ":skill_real_level"),  # 返回值赋值
+
+]),
+# ==============================================
 # 脚本功能：获取部队/英雄某项技能是否可加点
 # 入参1：目标部队/英雄ID
 # 入参2：需要查询的技能ID
@@ -998,204 +1161,185 @@
     (store_div, ":ca_charisma_div_3", ":var_ca_charisma", 3),  # 取当前魅力属性的三分之一作为上限 
 
     (store_skill_level, ":curr_skill", ":skill_id", ":troop"), # 获取技能等级 
-    (call_script, "script_game_get_skill_modifier_for_troop", ":troop", ":skill_id"),  # 调用获取额外技能点的脚本 
-    (assign, ":skill_modifier_value", reg0),  # 获取额外技能点的值 
+    # 通过计算额外获得或减少的，计算实际的技能点为多少
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", ":skill_id"),
+    #(call_script, "script_game_get_skill_modifier_for_troop", ":troop", ":skill_id"),  # 调用获取额外技能点的脚本 
+    (assign, ":curr_skill", reg0),  # 获取真实的技能数值
+    
+    #(val_sub, ":curr_skill", ":skill_modifier_value"),  # 【后续更新添加】获取实际技能等级
     (store_add, ":dst_skill_add_1", ":curr_skill", ":add_level"),  # 计算预计升到多少级 
-    #(val_sub, ":dst_skill_add_1", ":skill_modifier_value"),  # 需要减去额外加的技能点 
-    (store_add, ":auto_all_slot_1614", "$g_pm_auto_point_base_slot", 14), # 1614
-    (troop_get_slot, ":curr_alloc_skill", ":troop", ":auto_all_slot_1614"), # 获取待加技能点
+    (store_add, ":auto_all_slot_1614", "$g_pm_auto_point_base_slot", 14), # 1614 
+    (troop_get_slot, ":curr_alloc_skill", ":troop", ":auto_all_slot_1614"), # 获取待加技能点 
     (assign, ":can_add_point", 0), # 默认不可加点
 
-    (store_add, ":slot_trp_auto_1931", "$g_pm_auto_point_base_slot_part", 131), # 铁 骨 1931
-    (store_add, ":slot_trp_auto_1932", "$g_pm_auto_point_base_slot_part", 132), # 强 击 1932
-    (store_add, ":slot_trp_auto_1933", "$g_pm_auto_point_base_slot_part", 133), # 强 掷 1933
-    (store_add, ":slot_trp_auto_1934", "$g_pm_auto_point_base_slot_part", 134), # 强 弓 1934
-    (store_add, ":slot_trp_auto_1935", "$g_pm_auto_point_base_slot_part", 135), # 武 器 掌 握 1935
-    (store_add, ":slot_trp_auto_1936", "$g_pm_auto_point_base_slot_part", 136), # 盾 防 1936
-    (store_add, ":slot_trp_auto_1937", "$g_pm_auto_point_base_slot_part", 137), # 跑 动 1937
-    (store_add, ":slot_trp_auto_1938", "$g_pm_auto_point_base_slot_part", 138), # 骑 术 1938
-    (store_add, ":slot_trp_auto_1939", "$g_pm_auto_point_base_slot_part", 139), # 骑 射 1939
-    (store_add, ":slot_trp_auto_1940", "$g_pm_auto_point_base_slot_part", 140), # 掠 夺 1940
-    (store_add, ":slot_trp_auto_1941", "$g_pm_auto_point_base_slot_part", 141), # 教 练 1941
-    (store_add, ":slot_trp_auto_1942", "$g_pm_auto_point_base_slot_part", 142), # 追 踪 1942
-    (store_add, ":slot_trp_auto_1943", "$g_pm_auto_point_base_slot_part", 143), # 战 术 1943
-    (store_add, ":slot_trp_auto_1944", "$g_pm_auto_point_base_slot_part", 144), # 向 导 1944
-    (store_add, ":slot_trp_auto_1945", "$g_pm_auto_point_base_slot_part", 145), # 侦 察 1945
-    (store_add, ":slot_trp_auto_1946", "$g_pm_auto_point_base_slot_part", 146), # 辎 重 管 理 1946
-    (store_add, ":slot_trp_auto_1947", "$g_pm_auto_point_base_slot_part", 147), # 疗 伤 1947
-    (store_add, ":slot_trp_auto_1948", "$g_pm_auto_point_base_slot_part", 148), # 手 术 1948
-    (store_add, ":slot_trp_auto_1949", "$g_pm_auto_point_base_slot_part", 149), # 急 救 1949
-    (store_add, ":slot_trp_auto_1950", "$g_pm_auto_point_base_slot_part", 150), # 工 程 学 1950
-    (store_add, ":slot_trp_auto_1951", "$g_pm_auto_point_base_slot_part", 151), # 说 服 力 1951
-    (store_add, ":slot_trp_auto_1952", "$g_pm_auto_point_base_slot_part", 152), # 俘 虏 管 理 1952
-    (store_add, ":slot_trp_auto_1953", "$g_pm_auto_point_base_slot_part", 153), # 统 御 1953
-    (store_add, ":slot_trp_auto_1954", "$g_pm_auto_point_base_slot_part", 154), # 交 易 1954 
+    (call_script, "script_auto_get_skill_max_level", ":skill_id"),  # 获取技能上限值  
+    (assign, ":skill_limit", reg0), # 赋值给skill_limit
     
     (try_begin), # 铁骨-力量 
         (eq, ":skill_id", "skl_ironflesh"), 
         (le, ":dst_skill_add_1", ":ca_strength_div_3"),  # 不能超过力量属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1931"), # 获取铁骨上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1931"), # 获取铁骨上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 强击-力量 
         (eq, ":skill_id", "skl_power_strike"), 
         (le, ":dst_skill_add_1", ":ca_strength_div_3"),  # 不能超过力量属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1932"), # 获取强击上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1932"), # 获取强击上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 强制-力量 
         (eq, ":skill_id", "skl_power_throw"), 
         (le, ":dst_skill_add_1", ":ca_strength_div_3"),  # 不能超过力量属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1933"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1933"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 强弓-力量 
         (eq, ":skill_id", "skl_power_draw"), 
         (le, ":dst_skill_add_1", ":ca_strength_div_3"),  # 不能超过力量属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1934"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1934"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 武器掌握-敏捷 
         (eq, ":skill_id", "skl_weapon_master"), 
         (le, ":dst_skill_add_1", ":ca_agility_div_3"),  # 不能超过敏捷属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1935"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1935"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 盾防-敏捷 
         (eq, ":skill_id", "skl_shield"), 
         (le, ":dst_skill_add_1", ":ca_agility_div_3"),  # 不能超过敏捷属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1936"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1936"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 跑动-敏捷 
         (eq, ":skill_id", "skl_athletics"), 
         (le, ":dst_skill_add_1", ":ca_agility_div_3"),  # 不能超过敏捷属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1937"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1937"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 骑术-敏捷 
         (eq, ":skill_id", "skl_riding"), 
         (le, ":dst_skill_add_1", ":ca_agility_div_3"),  # 不能超过敏捷属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1938"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1938"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 骑射-敏捷 
         (eq, ":skill_id", "skl_horse_archery"), 
         (le, ":dst_skill_add_1", ":ca_agility_div_3"),  # 不能超过敏捷属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1939"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1939"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 掠夺-敏捷 
         (eq, ":skill_id", "skl_looting"), 
         (le, ":dst_skill_add_1", ":ca_agility_div_3"),  # 不能超过敏捷属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1940"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1940"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 教练-智力 
         (eq, ":skill_id", "skl_trainer"), 
         (le, ":dst_skill_add_1", ":ca_intelligence_div_3"),  # 不能超过智力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1941"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1941"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 追踪和狩猎-智力 
         (eq, ":skill_id", "skl_tracking"), 
         (le, ":dst_skill_add_1", ":ca_intelligence_div_3"),  # 不能超过智力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1942"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1942"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 战术-智力 
         (eq, ":skill_id", "skl_tactics"), 
         (le, ":dst_skill_add_1", ":ca_intelligence_div_3"),  # 不能超过智力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1943"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1943"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 向导-智力 
         (eq, ":skill_id", "skl_pathfinding"), 
         (le, ":dst_skill_add_1", ":ca_intelligence_div_3"),  # 不能超过智力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1944"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1944"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 侦察-智力 
         (eq, ":skill_id", "skl_spotting"), 
         (le, ":dst_skill_add_1", ":ca_intelligence_div_3"),  # 不能超过智力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1945"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1945"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 辎重管理-智力 
         (eq, ":skill_id", "skl_inventory_management"), 
         (le, ":dst_skill_add_1", ":ca_intelligence_div_3"),  # 不能超过智力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1946"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1946"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 疗伤-智力 
         (eq, ":skill_id", "skl_wound_treatment"), 
         (le, ":dst_skill_add_1", ":ca_intelligence_div_3"),  # 不能超过智力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1947"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1947"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 手术-智力 
         (eq, ":skill_id", "skl_surgery"), 
         (le, ":dst_skill_add_1", ":ca_intelligence_div_3"),  # 不能超过智力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1948"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1948"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 急救-智力 
         (eq, ":skill_id", "skl_first_aid"), 
         (le, ":dst_skill_add_1", ":ca_intelligence_div_3"),  # 不能超过智力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1949"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1949"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 工程学-智力 
         (eq, ":skill_id", "skl_engineer"), 
         (le, ":dst_skill_add_1", ":ca_intelligence_div_3"),  # 不能超过智力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1950"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1950"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 说服力-魅力
         (eq, ":skill_id", "skl_persuasion"), 
         (le, ":dst_skill_add_1", ":ca_charisma_div_3"),  # 不能超过魅力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1951"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1951"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 俘虏管理-魅力
         (eq, ":skill_id", "skl_prisoner_management"), 
         (le, ":dst_skill_add_1", ":ca_charisma_div_3"),  # 不能超过魅力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1952"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1952"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 统御-魅力
         (eq, ":skill_id", "skl_leadership"), 
         (le, ":dst_skill_add_1", ":ca_charisma_div_3"),  # 不能超过魅力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1953"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1953"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (assign, ":can_add_point", 1), # 可加点
     (else_try), # 交易-魅力
         (eq, ":skill_id", "skl_trade"), 
         (le, ":dst_skill_add_1", ":ca_charisma_div_3"),  # 不能超过魅力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1954"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1954"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点 
         (assign, ":can_add_point", 1), # 可加点
@@ -1230,44 +1374,23 @@
     (store_div, ":ca_charisma_div_3", ":var_ca_charisma", 3),  # 取当前魅力属性的三分之一作为上限 
 
     (store_skill_level, ":curr_skill", ":skill_id", ":troop"), # 获取技能等级 
-    (call_script, "script_game_get_skill_modifier_for_troop", ":troop", ":skill_id"),  # 调用获取额外技能点的脚本 
-    (assign, ":skill_modifier_value", reg0),  # 获取额外技能点的值 
+    #(call_script, "script_game_get_skill_modifier_for_troop", ":troop", ":skill_id"),  # 调用获取额外技能点的脚本 
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", ":skill_id"),
+    (assign, ":curr_skill", reg0),  # 获取真实技能值
     (store_add, ":dst_skill_add_1", ":curr_skill", ":add_level"),  # 计算预计升到多少级 
     #(val_sub, ":dst_skill_add_1", ":skill_modifier_value"),  # 需要减去额外加的技能点 
     (store_add, ":auto_all_slot_1614", "$g_pm_auto_point_base_slot", 14), # 1614
     (troop_get_slot, ":curr_alloc_skill", ":troop", ":auto_all_slot_1614"), # 获取待加技能点
 
-    (store_add, ":slot_trp_auto_1931", "$g_pm_auto_point_base_slot_part", 131), # 铁 骨 1931
-    (store_add, ":slot_trp_auto_1932", "$g_pm_auto_point_base_slot_part", 132), # 强 击 1932
-    (store_add, ":slot_trp_auto_1933", "$g_pm_auto_point_base_slot_part", 133), # 强 掷 1933
-    (store_add, ":slot_trp_auto_1934", "$g_pm_auto_point_base_slot_part", 134), # 强 弓 1934
-    (store_add, ":slot_trp_auto_1935", "$g_pm_auto_point_base_slot_part", 135), # 武 器 掌 握 1935
-    (store_add, ":slot_trp_auto_1936", "$g_pm_auto_point_base_slot_part", 136), # 盾 防 1936
-    (store_add, ":slot_trp_auto_1937", "$g_pm_auto_point_base_slot_part", 137), # 跑 动 1937
-    (store_add, ":slot_trp_auto_1938", "$g_pm_auto_point_base_slot_part", 138), # 骑 术 1938
-    (store_add, ":slot_trp_auto_1939", "$g_pm_auto_point_base_slot_part", 139), # 骑 射 1939
-    (store_add, ":slot_trp_auto_1940", "$g_pm_auto_point_base_slot_part", 140), # 掠 夺 1940
-    (store_add, ":slot_trp_auto_1941", "$g_pm_auto_point_base_slot_part", 141), # 教 练 1941
-    (store_add, ":slot_trp_auto_1942", "$g_pm_auto_point_base_slot_part", 142), # 追 踪 1942
-    (store_add, ":slot_trp_auto_1943", "$g_pm_auto_point_base_slot_part", 143), # 战 术 1943
-    (store_add, ":slot_trp_auto_1944", "$g_pm_auto_point_base_slot_part", 144), # 向 导 1944
-    (store_add, ":slot_trp_auto_1945", "$g_pm_auto_point_base_slot_part", 145), # 侦 察 1945
-    (store_add, ":slot_trp_auto_1946", "$g_pm_auto_point_base_slot_part", 146), # 辎 重 管 理 1946
-    (store_add, ":slot_trp_auto_1947", "$g_pm_auto_point_base_slot_part", 147), # 疗 伤 1947
-    (store_add, ":slot_trp_auto_1948", "$g_pm_auto_point_base_slot_part", 148), # 手 术 1948
-    (store_add, ":slot_trp_auto_1949", "$g_pm_auto_point_base_slot_part", 149), # 急 救 1949
-    (store_add, ":slot_trp_auto_1950", "$g_pm_auto_point_base_slot_part", 150), # 工 程 学 1950
-    (store_add, ":slot_trp_auto_1951", "$g_pm_auto_point_base_slot_part", 151), # 说 服 力 1951
-    (store_add, ":slot_trp_auto_1952", "$g_pm_auto_point_base_slot_part", 152), # 俘 虏 管 理 1952
-    (store_add, ":slot_trp_auto_1953", "$g_pm_auto_point_base_slot_part", 153), # 统 御 1953
-    (store_add, ":slot_trp_auto_1954", "$g_pm_auto_point_base_slot_part", 154), # 交 易 1954 
+    (call_script, "script_auto_get_skill_max_level", ":skill_id"),  # 获取技能上限值  
+    (assign, ":skill_limit", reg0), # 赋值给skill_limit
 
     
     
     (try_begin), # 铁骨-力量 
         (eq, ":skill_id", "skl_ironflesh"), 
         (le, ":dst_skill_add_1", ":ca_strength_div_3"),  # 不能超过力量属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1931"), # 获取铁骨上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1931"), # 获取铁骨上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1276,7 +1399,7 @@
     (else_try), # 强击-力量 
         (eq, ":skill_id", "skl_power_strike"), 
         (le, ":dst_skill_add_1", ":ca_strength_div_3"),  # 不能超过力量属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1932"), # 获取强击上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1932"), # 获取强击上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1285,7 +1408,7 @@
     (else_try), # 强制-力量 
         (eq, ":skill_id", "skl_power_throw"), 
         (le, ":dst_skill_add_1", ":ca_strength_div_3"),  # 不能超过力量属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1933"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1933"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1294,7 +1417,7 @@
     (else_try), # 强弓-力量 
         (eq, ":skill_id", "skl_power_draw"), 
         (le, ":dst_skill_add_1", ":ca_strength_div_3"),  # 不能超过力量属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1934"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1934"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1303,7 +1426,7 @@
     (else_try), # 武器掌握-敏捷 
         (eq, ":skill_id", "skl_weapon_master"), 
         (le, ":dst_skill_add_1", ":ca_agility_div_3"),  # 不能超过敏捷属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1935"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1935"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1312,7 +1435,7 @@
     (else_try), # 盾防-敏捷 
         (eq, ":skill_id", "skl_shield"), 
         (le, ":dst_skill_add_1", ":ca_agility_div_3"),  # 不能超过敏捷属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1936"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1936"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1321,7 +1444,7 @@
     (else_try), # 跑动-敏捷 
         (eq, ":skill_id", "skl_athletics"), 
         (le, ":dst_skill_add_1", ":ca_agility_div_3"),  # 不能超过敏捷属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1937"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1937"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1330,7 +1453,7 @@
     (else_try), # 骑术-敏捷 
         (eq, ":skill_id", "skl_riding"), 
         (le, ":dst_skill_add_1", ":ca_agility_div_3"),  # 不能超过敏捷属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1938"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1938"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1339,7 +1462,7 @@
     (else_try), # 骑射-敏捷 
         (eq, ":skill_id", "skl_horse_archery"), 
         (le, ":dst_skill_add_1", ":ca_agility_div_3"),  # 不能超过敏捷属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1939"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1939"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1348,7 +1471,7 @@
     (else_try), # 掠夺-敏捷 
         (eq, ":skill_id", "skl_looting"), 
         (le, ":dst_skill_add_1", ":ca_agility_div_3"),  # 不能超过敏捷属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1940"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1940"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1357,7 +1480,7 @@
     (else_try), # 教练-智力 
         (eq, ":skill_id", "skl_trainer"), 
         (le, ":dst_skill_add_1", ":ca_intelligence_div_3"),  # 不能超过智力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1941"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1941"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1366,7 +1489,7 @@
     (else_try), # 追踪和狩猎-智力 
         (eq, ":skill_id", "skl_tracking"), 
         (le, ":dst_skill_add_1", ":ca_intelligence_div_3"),  # 不能超过智力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1942"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1942"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1375,7 +1498,7 @@
     (else_try), # 战术-智力 
         (eq, ":skill_id", "skl_tactics"), 
         (le, ":dst_skill_add_1", ":ca_intelligence_div_3"),  # 不能超过智力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1943"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1943"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1384,7 +1507,7 @@
     (else_try), # 向导-智力 
         (eq, ":skill_id", "skl_pathfinding"), 
         (le, ":dst_skill_add_1", ":ca_intelligence_div_3"),  # 不能超过智力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1944"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1944"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1393,7 +1516,7 @@
     (else_try), # 侦察-智力 
         (eq, ":skill_id", "skl_spotting"), 
         (le, ":dst_skill_add_1", ":ca_intelligence_div_3"),  # 不能超过智力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1945"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1945"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1402,7 +1525,7 @@
     (else_try), # 辎重管理-智力 
         (eq, ":skill_id", "skl_inventory_management"), 
         (le, ":dst_skill_add_1", ":ca_intelligence_div_3"),  # 不能超过智力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1946"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1946"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1411,7 +1534,7 @@
     (else_try), # 疗伤-智力 
         (eq, ":skill_id", "skl_wound_treatment"), 
         (le, ":dst_skill_add_1", ":ca_intelligence_div_3"),  # 不能超过智力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1947"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1947"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1420,7 +1543,7 @@
     (else_try), # 手术-智力 
         (eq, ":skill_id", "skl_surgery"), 
         (le, ":dst_skill_add_1", ":ca_intelligence_div_3"),  # 不能超过智力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1948"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1948"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1429,7 +1552,7 @@
     (else_try), # 急救-智力 
         (eq, ":skill_id", "skl_first_aid"), 
         (le, ":dst_skill_add_1", ":ca_intelligence_div_3"),  # 不能超过智力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1949"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1949"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1438,7 +1561,7 @@
     (else_try), # 工程学-智力 
         (eq, ":skill_id", "skl_engineer"), 
         (le, ":dst_skill_add_1", ":ca_intelligence_div_3"),  # 不能超过智力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1950"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1950"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1447,7 +1570,7 @@
     (else_try), # 说服力-魅力
         (eq, ":skill_id", "skl_persuasion"), 
         (le, ":dst_skill_add_1", ":ca_charisma_div_3"),  # 不能超过魅力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1951"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1951"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1456,7 +1579,7 @@
     (else_try), # 俘虏管理-魅力
         (eq, ":skill_id", "skl_prisoner_management"), 
         (le, ":dst_skill_add_1", ":ca_charisma_div_3"),  # 不能超过魅力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1952"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1952"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1465,7 +1588,7 @@
     (else_try), # 统御-魅力
         (eq, ":skill_id", "skl_leadership"), 
         (le, ":dst_skill_add_1", ":ca_charisma_div_3"),  # 不能超过魅力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1953"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1953"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -1474,7 +1597,7 @@
     (else_try), # 交易-魅力
         (eq, ":skill_id", "skl_trade"), 
         (le, ":dst_skill_add_1", ":ca_charisma_div_3"),  # 不能超过魅力属性的三分之一 
-        (troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1954"), # 获取上限值 
+        #(troop_get_slot, ":skill_limit", "trp_auto_temp_list_3", ":slot_trp_auto_1954"), # 获取上限值 
         (le, ":dst_skill_add_1", ":skill_limit"),  # 不能超过属性的上限值 
         (ge, ":curr_alloc_skill", ":add_level"),  # 必须有足够待加技能点才能成功加点 
         (troop_raise_skill, ":troop", ":skill_id", ":add_level"),  # 实际提升技能函数 
@@ -2446,99 +2569,123 @@
       # ==========================================
       # 2. 保存 25 个技能 【槽 1804 ~ 1828】
       # ==========================================
-      (store_skill_level, reg0, "skl_ironflesh", ":troop"),          # 铁骨
+      #(store_skill_level, reg0, "skl_ironflesh", ":troop"),          # 铁骨
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_ironflesh"),
       (store_add, ":operate_slot_1804", "$g_pm_auto_point_base_slot_part", 4), # 1804
       (troop_set_slot, "trp_auto_point", ":operate_slot_1804", reg0),
       
-      (store_skill_level, reg0, "skl_power_strike", ":troop"),       # 强击
+      #(store_skill_level, reg0, "skl_power_strike", ":troop"),       # 强击
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_power_strike"),
       (store_add, ":operate_slot_1805", "$g_pm_auto_point_base_slot_part", 5), # 1805
       (troop_set_slot, "trp_auto_point", ":operate_slot_1805", reg0),
       
-      (store_skill_level, reg0, "skl_power_throw", ":troop"),         # 强掷
+      #(store_skill_level, reg0, "skl_power_throw", ":troop"),         # 强掷
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_power_throw"),
       (store_add, ":operate_slot_1806", "$g_pm_auto_point_base_slot_part", 6), # 1806
       (troop_set_slot, "trp_auto_point", ":operate_slot_1806", reg0),
       
-      (store_skill_level, reg0, "skl_power_draw", ":troop"),         # 强弓
+      #(store_skill_level, reg0, "skl_power_draw", ":troop"),         # 强弓
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_power_draw"),
       (store_add, ":operate_slot_1807", "$g_pm_auto_point_base_slot_part", 7), # 1807
       (troop_set_slot, "trp_auto_point", ":operate_slot_1807", reg0),
       
-      (store_skill_level, reg0, "skl_weapon_master", ":troop"),       # 武器掌握
+      #(store_skill_level, reg0, "skl_weapon_master", ":troop"),       # 武器掌握
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_weapon_master"),
       (store_add, ":operate_slot_1808", "$g_pm_auto_point_base_slot_part", 8), # 1808
       (troop_set_slot, "trp_auto_point", ":operate_slot_1808", reg0),
       
-      (store_skill_level, reg0, "skl_shield", ":troop"),              # 盾防
+      #(store_skill_level, reg0, "skl_shield", ":troop"),              # 盾防
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_shield"),
       (store_add, ":operate_slot_1809", "$g_pm_auto_point_base_slot_part", 9), # 1809
       (troop_set_slot, "trp_auto_point", ":operate_slot_1809", reg0),
       
-      (store_skill_level, reg0, "skl_athletics", ":troop"),           # 跑动
+      #(store_skill_level, reg0, "skl_athletics", ":troop"),           # 跑动
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_athletics"),
       (store_add, ":operate_slot_1810", "$g_pm_auto_point_base_slot_part", 10), # 1810
       (troop_set_slot, "trp_auto_point", ":operate_slot_1810", reg0),
       
-      (store_skill_level, reg0, "skl_riding", ":troop"),              # 骑术
+      #(store_skill_level, reg0, "skl_riding", ":troop"),              # 骑术
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_riding"),
       (store_add, ":operate_slot_1811", "$g_pm_auto_point_base_slot_part", 11), # 1811
       (troop_set_slot, "trp_auto_point", ":operate_slot_1811", reg0),
       
-      (store_skill_level, reg0, "skl_horse_archery", ":troop"),       # 骑射
+      #(store_skill_level, reg0, "skl_horse_archery", ":troop"),       # 骑射
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_horse_archery"),
       (store_add, ":operate_slot_1812", "$g_pm_auto_point_base_slot_part", 12), # 1812
       (troop_set_slot, "trp_auto_point", ":operate_slot_1812", reg0),
       
-      (store_skill_level, reg0, "skl_looting", ":troop"),             # 掠夺
+      #(store_skill_level, reg0, "skl_looting", ":troop"),             # 掠夺
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_looting"),
       (store_add, ":operate_slot_1813", "$g_pm_auto_point_base_slot_part", 13), # 1813
       (troop_set_slot, "trp_auto_point", ":operate_slot_1813", reg0),
       
-      (store_skill_level, reg0, "skl_trainer", ":troop"),            # 教练
+      #(store_skill_level, reg0, "skl_trainer", ":troop"),            # 教练
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_trainer"),
       (store_add, ":operate_slot_1814", "$g_pm_auto_point_base_slot_part", 14), # 1814
       (troop_set_slot, "trp_auto_point", ":operate_slot_1814", reg0),
       
-      (store_skill_level, reg0, "skl_tracking", ":troop"),           # 追踪
+      #(store_skill_level, reg0, "skl_tracking", ":troop"),           # 追踪
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_tracking"),
       (store_add, ":operate_slot_1815", "$g_pm_auto_point_base_slot_part", 15), # 1815
       (troop_set_slot, "trp_auto_point", ":operate_slot_1815", reg0),
       
-      (store_skill_level, reg0, "skl_tactics", ":troop"),            # 战术
+      #(store_skill_level, reg0, "skl_tactics", ":troop"),            # 战术
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_tactics"),
       (store_add, ":operate_slot_1816", "$g_pm_auto_point_base_slot_part", 16), # 1816
       (troop_set_slot, "trp_auto_point", ":operate_slot_1816", reg0),
       
-      (store_skill_level, reg0, "skl_pathfinding", ":troop"),        # 向导
+      #(store_skill_level, reg0, "skl_pathfinding", ":troop"),        # 向导
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_pathfinding"),
       (store_add, ":operate_slot_1817", "$g_pm_auto_point_base_slot_part", 17), # 1817
       (troop_set_slot, "trp_auto_point", ":operate_slot_1817", reg0),
       
-      (store_skill_level, reg0, "skl_spotting", ":troop"),           # 侦察
+      #(store_skill_level, reg0, "skl_spotting", ":troop"),           # 侦察
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_spotting"),
       (store_add, ":operate_slot_1818", "$g_pm_auto_point_base_slot_part", 18), # 1818
       (troop_set_slot, "trp_auto_point", ":operate_slot_1818", reg0),
       
-      (store_skill_level, reg0, "skl_inventory_management", ":troop"),# 辎重
+      #(store_skill_level, reg0, "skl_inventory_management", ":troop"),# 辎重
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_inventory_management"),
       (store_add, ":operate_slot_1819", "$g_pm_auto_point_base_slot_part", 19), # 1819
       (troop_set_slot, "trp_auto_point", ":operate_slot_1819", reg0),
       
-      (store_skill_level, reg0, "skl_wound_treatment", ":troop"),    # 疗伤
+      #(store_skill_level, reg0, "skl_wound_treatment", ":troop"),    # 疗伤
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_wound_treatment"),
       (store_add, ":operate_slot_1820", "$g_pm_auto_point_base_slot_part", 20), # 1820
       (troop_set_slot, "trp_auto_point", ":operate_slot_1820", reg0),
       
-      (store_skill_level, reg0, "skl_surgery", ":troop"),            # 手术
+      #(store_skill_level, reg0, "skl_surgery", ":troop"),            # 手术
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_surgery"),
       (store_add, ":operate_slot_1821", "$g_pm_auto_point_base_slot_part", 21), # 1821
       (troop_set_slot, "trp_auto_point", ":operate_slot_1821", reg0),
       
-      (store_skill_level, reg0, "skl_first_aid", ":troop"),         # 急救
+      #(store_skill_level, reg0, "skl_first_aid", ":troop"),         # 急救
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_first_aid"),
       (store_add, ":operate_slot_1822", "$g_pm_auto_point_base_slot_part", 22), # 1822
       (troop_set_slot, "trp_auto_point", ":operate_slot_1822", reg0),
       
-      (store_skill_level, reg0, "skl_engineer", ":troop"),           # 工程
+      #(store_skill_level, reg0, "skl_engineer", ":troop"),           # 工程
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_engineer"),
       (store_add, ":operate_slot_1823", "$g_pm_auto_point_base_slot_part", 23), # 1823
       (troop_set_slot, "trp_auto_point", ":operate_slot_1823", reg0),
       
-      (store_skill_level, reg0, "skl_persuasion", ":troop"),         # 说服
+      #(store_skill_level, reg0, "skl_persuasion", ":troop"),         # 说服
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_persuasion"),
       (store_add, ":operate_slot_1824", "$g_pm_auto_point_base_slot_part", 24), # 1824
       (troop_set_slot, "trp_auto_point", ":operate_slot_1824", reg0),
       
-      (store_skill_level, reg0, "skl_prisoner_management", ":troop"),# 俘虏
+      #(store_skill_level, reg0, "skl_prisoner_management", ":troop"),# 俘虏
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_prisoner_management"),
       (store_add, ":operate_slot_1825", "$g_pm_auto_point_base_slot_part", 25), # 1825
       (troop_set_slot, "trp_auto_point", ":operate_slot_1825", reg0),
       
-      (store_skill_level, reg0, "skl_leadership", ":troop"),         # 统御
+      #(store_skill_level, reg0, "skl_leadership", ":troop"),         # 统御
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_leadership"),
       (store_add, ":operate_slot_1826", "$g_pm_auto_point_base_slot_part", 26), # 1826
       (troop_set_slot, "trp_auto_point", ":operate_slot_1826", reg0),
       
-      (store_skill_level, reg0, "skl_trade", ":troop"),              # 交易
+      #(store_skill_level, reg0, "skl_trade", ":troop"),              # 交易
+      (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_trade"),
       (store_add, ":operate_slot_1827", "$g_pm_auto_point_base_slot_part", 27), # 1827
       (troop_set_slot, "trp_auto_point", ":operate_slot_1827", reg0),
 
@@ -2639,168 +2786,216 @@
     # 铁骨
     (store_add, ":operate_slot_1804", "$g_pm_auto_point_base_slot_part", 4), # 1804
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1804"),
-    (store_skill_level, ":current", skl_ironflesh, ":troop"),
+    #(store_skill_level, ":current", skl_ironflesh, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_ironflesh"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_ironflesh, ":target"),
 
     # 强击
     (store_add, ":operate_slot_1805", "$g_pm_auto_point_base_slot_part", 5), # 1805
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1805"),
-    (store_skill_level, ":current", skl_power_strike, ":troop"),
+    #(store_skill_level, ":current", skl_power_strike, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_power_strike"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_power_strike, ":target"),
 
     # 强掷
     (store_add, ":operate_slot_1806", "$g_pm_auto_point_base_slot_part", 6), # 1806
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1806"),
-    (store_skill_level, ":current", skl_power_throw, ":troop"),
+    #(store_skill_level, ":current", skl_power_throw, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_power_throw"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_power_throw, ":target"),
 
     # 强弓
     (store_add, ":operate_slot_1807", "$g_pm_auto_point_base_slot_part", 7), # 1807
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1807"),
-    (store_skill_level, ":current", skl_power_draw, ":troop"),
+    #(store_skill_level, ":current", skl_power_draw, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_power_draw"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_power_draw, ":target"),
 
     # 武器掌握
     (store_add, ":operate_slot_1808", "$g_pm_auto_point_base_slot_part", 8), # 1808
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1808"),
-    (store_skill_level, ":current", skl_weapon_master, ":troop"),
+    #(store_skill_level, ":current", skl_weapon_master, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_weapon_master"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_weapon_master, ":target"),
 
     # 盾防
     (store_add, ":operate_slot_1809", "$g_pm_auto_point_base_slot_part", 9), # 1809
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1809"),
-    (store_skill_level, ":current", skl_shield, ":troop"),
+    #(store_skill_level, ":current", skl_shield, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_shield"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_shield, ":target"),
 
     # 跑动
     (store_add, ":operate_slot_1810", "$g_pm_auto_point_base_slot_part", 10), # 1810
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1810"),
-    (store_skill_level, ":current", skl_athletics, ":troop"),
+    #(store_skill_level, ":current", skl_athletics, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_athletics"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_athletics, ":target"),
 
     # 骑术
     (store_add, ":operate_slot_1811", "$g_pm_auto_point_base_slot_part", 11), # 1811
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1811"),
-    (store_skill_level, ":current", skl_riding, ":troop"),
+    #(store_skill_level, ":current", skl_riding, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_riding"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_riding, ":target"),
 
     # 骑射
     (store_add, ":operate_slot_1812", "$g_pm_auto_point_base_slot_part", 12), # 1812
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1812"),
-    (store_skill_level, ":current", skl_horse_archery, ":troop"),
+    #(store_skill_level, ":current", skl_horse_archery, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_horse_archery"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_horse_archery, ":target"),
 
     # 掠夺
     (store_add, ":operate_slot_1813", "$g_pm_auto_point_base_slot_part", 13), # 1813  
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1813"),
-    (store_skill_level, ":current", skl_looting, ":troop"),
+    #(store_skill_level, ":current", skl_looting, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_looting"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_looting, ":target"),
 
     # 教练
     (store_add, ":operate_slot_1814", "$g_pm_auto_point_base_slot_part", 14), # 1814
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1814"),
-    (store_skill_level, ":current", skl_trainer, ":troop"),
+    #(store_skill_level, ":current", skl_trainer, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_trainer"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_trainer, ":target"),
 
     # 追踪
     (store_add, ":operate_slot_1815", "$g_pm_auto_point_base_slot_part", 15), # 1815
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1815"),
-    (store_skill_level, ":current", skl_tracking, ":troop"),
+    #(store_skill_level, ":current", skl_tracking, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_tracking"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_tracking, ":target"),
 
     # 战术
     (store_add, ":operate_slot_1816", "$g_pm_auto_point_base_slot_part", 16), # 1816
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1816"),
-    (store_skill_level, ":current", skl_tactics, ":troop"),
+    #(store_skill_level, ":current", skl_tactics, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_tactics"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_tactics, ":target"),
 
     # 向导
     (store_add, ":operate_slot_1817", "$g_pm_auto_point_base_slot_part", 17), # 1817
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1817"),
-    (store_skill_level, ":current", skl_pathfinding, ":troop"),
+    #(store_skill_level, ":current", skl_pathfinding, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_pathfinding"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_pathfinding, ":target"),
 
     # 侦察
     (store_add, ":operate_slot_1818", "$g_pm_auto_point_base_slot_part", 18), # 1818
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1818"),
-    (store_skill_level, ":current", skl_spotting, ":troop"),
+    #(store_skill_level, ":current", skl_spotting, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_spotting"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_spotting, ":target"),
 
     # 辎重管理
     (store_add, ":operate_slot_1819", "$g_pm_auto_point_base_slot_part", 19), # 1819
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1819"),
-    (store_skill_level, ":current", skl_inventory_management, ":troop"),
+    #(store_skill_level, ":current", skl_inventory_management, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_inventory_management"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_inventory_management, ":target"),
 
     # 疗伤
     (store_add, ":operate_slot_1820", "$g_pm_auto_point_base_slot_part", 20), # 1820
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1820"),
-    (store_skill_level, ":current", skl_wound_treatment, ":troop"),
+    #(store_skill_level, ":current", skl_wound_treatment, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_wound_treatment"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_wound_treatment, ":target"),
 
     # 手术
     (store_add, ":operate_slot_1821", "$g_pm_auto_point_base_slot_part", 21), # 1821
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1821"),
-    (store_skill_level, ":current", skl_surgery, ":troop"),
+    #(store_skill_level, ":current", skl_surgery, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_surgery"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_surgery, ":target"),
 
     # 急救
     (store_add, ":operate_slot_1822", "$g_pm_auto_point_base_slot_part", 22), # 1822
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1822"),
-    (store_skill_level, ":current", skl_first_aid, ":troop"),
+    #(store_skill_level, ":current", skl_first_aid, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_first_aid"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_first_aid, ":target"),
 
     # 工程
     (store_add, ":operate_slot_1823", "$g_pm_auto_point_base_slot_part", 23), # 1823
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1823"),
-    (store_skill_level, ":current", skl_engineer, ":troop"),
+    #(store_skill_level, ":current", skl_engineer, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_engineer"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_engineer, ":target"),
 
     # 说服
     (store_add, ":operate_slot_1824", "$g_pm_auto_point_base_slot_part", 24), # 1824
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1824"),
-    (store_skill_level, ":current", skl_persuasion, ":troop"),
+    #(store_skill_level, ":current", skl_persuasion, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_persuasion"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_persuasion, ":target"),
 
     # 俘虏管理
     (store_add, ":operate_slot_1825", "$g_pm_auto_point_base_slot_part", 25), # 1825
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1825"),
-    (store_skill_level, ":current", skl_prisoner_management, ":troop"),
+    #(store_skill_level, ":current", skl_prisoner_management, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_prisoner_management"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_prisoner_management, ":target"),
 
     # 统御
     (store_add, ":operate_slot_1826", "$g_pm_auto_point_base_slot_part", 26), # 1826
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1826"),
-    (store_skill_level, ":current", skl_leadership, ":troop"),
+    #(store_skill_level, ":current", skl_leadership, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_leadership"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_leadership, ":target"),
 
     # 交易
     (store_add, ":operate_slot_1827", "$g_pm_auto_point_base_slot_part", 27), # 1827
     (troop_get_slot, ":target", "trp_auto_point", ":operate_slot_1827"),
-    (store_skill_level, ":current", skl_trade, ":troop"),
+    #(store_skill_level, ":current", skl_trade, ":troop"),
+    (call_script, "script_auto_get_troop_skill_real_level", ":troop", "skl_trade"),
+    (assign, ":current", reg0),
     (val_sub, ":target", ":current"),
     (troop_raise_skill, ":troop", skl_trade, ":target"),
 
@@ -2971,13 +3166,12 @@
         (this_or_next|eq, ":skl", "skl_prisoner_management"),
         (this_or_next|eq, ":skl", "skl_leadership"),
         (eq, ":skl", "skl_trade"),
-        # 当前总技能等级【含加成】
-        (store_skill_level, ":old_total", ":skl", ":troop"),
-        # 获取加成
-        (call_script, "script_game_get_skill_modifier_for_troop", ":troop", ":skl"),
-        (assign, ":modifier", reg0),
+        # 当前技能真实等级
+        #(store_skill_level, ":old_total", ":skl", ":troop"),
+        (call_script, "script_auto_get_troop_skill_real_level", ":troop", ":skl"),
+        (assign, ":old_spent", reg0),
         # 玩家手动加的技能点
-        (store_sub, ":old_spent", ":old_total", ":modifier"),
+        #(store_sub, ":old_spent", ":old_total", ":modifier"),
         # 初始技能等级
         (troop_get_slot, ":base_skill", ":troop", ":skl_offset"),
         # 计算需要重置的点数
@@ -3098,12 +3292,10 @@
         (this_or_next|eq, ":skl", "skl_leadership"),
         (eq, ":skl", "skl_trade"),
         # 当前总技能等级【含加成】
-        (store_skill_level, ":old_total", ":skl", ":troop"),
-        # 获取加成
-        (call_script, "script_game_get_skill_modifier_for_troop", ":troop", ":skl"),
-        (assign, ":modifier", reg0),
+        (call_script, "script_auto_get_troop_skill_real_level", ":troop", ":skl"),
+        (assign, ":old_spent", reg0),
         # 玩家手动加的技能点
-        (store_sub, ":old_spent", ":old_total", ":modifier"),
+        #(store_sub, ":old_spent", ":old_total", ":modifier"),
         # 初始技能等级
         (troop_get_slot, ":base_skill", ":troop", ":skl_offset"),
         # 计算需要重置的点数
@@ -3308,12 +3500,10 @@
         (this_or_next|eq, ":skl", "skl_leadership"),
         (eq, ":skl", "skl_trade"),
         # 当前总技能等级【含加成】
-        (store_skill_level, ":old_total", ":skl", ":troop"),
-        # 获取加成
-        (call_script, "script_game_get_skill_modifier_for_troop", ":troop", ":skl"),
-        (assign, ":modifier", reg0),
+        (call_script, "script_auto_get_troop_skill_real_level", ":troop", ":skl"),
+        (assign, ":old_spent", reg0),
         # 玩家手动加的技能点
-        (store_sub, ":old_spent", ":old_total", ":modifier"),
+        #(store_sub, ":old_spent", ":old_total", ":modifier"),
         # 初始技能等级
         (troop_get_slot, ":base_skill", ":troop", ":skl_offset"),
         # 计算需要重置的点数
@@ -3679,7 +3869,6 @@
       (try_end),
   (try_end),
 
-
 ]),
 
 
@@ -3846,17 +4035,28 @@
         (troop_set_slot, ":troop", ":operate_index", reg10),  # 赋值给存储初始技能数值的对应槽
         (val_sub, ":operate_index", 1),
     (try_end),
+
 ]),
 
 
 # 开始新的场景
-("auto_point_before_mission_start", [
-  (assign, "$g_pm_auto_point_is_can_move_item", 0),  # 进入场景后，封锁更换装备和洗点功能
+("auto_point_before_mission_start", 
+[
+    (assign, "$g_pm_auto_point_is_can_move_item", 0),  # 进入场景后，封锁更换装备和洗点功能
 
-  ]),
+]),
 
 # 结束新的场景
-("auto_point_end_mission", [
-  (assign, "$g_pm_auto_point_is_can_move_item", 1), # 退出场景时，解锁更换装备和洗点功能
-  (call_script, "script_start_auto_point"),  # 退出场景时，运行一次自动加点
-  ]),
+("auto_point_end_mission", 
+[
+    (assign, "$g_pm_auto_point_is_can_move_item", 1), # 退出场景时，解锁更换装备和洗点功能
+    (call_script, "script_start_auto_point"),  # 退出场景时，运行一次自动加点
+
+]),
+
+# ("game_character_screen_requested",
+# [
+#     (set_trigger_result, 1),        
+#     (start_presentation, "prsnt_exchange_special_troop_equippment"),
+
+# ]),

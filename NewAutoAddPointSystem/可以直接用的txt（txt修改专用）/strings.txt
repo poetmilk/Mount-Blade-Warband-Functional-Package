@@ -97,7 +97,7 @@ str_auto_point_input_default_infantry auto_point_input_default_infantry
 str_auto_point_input_default_cavalry auto_point_input_default_cavalry
 str_auto_point_input_default_archers auto_point_input_default_archers
 str_auto_point_input_default_horse_archers auto_point_input_default_horse_archers
-str_auto_point_input_default_crossbow_musket auto_point_input_default_crossbow_musket
+str_auto_point_input_default_crossbow auto_point_input_default_crossbow
 str_auto_point_input_default_none auto_point_input_default_none
 str_auto_point_not_money auto_point_not_money
 str_auto_point_not_free_cap auto_point_not_free_cap
@@ -126,6 +126,7 @@ str_auto_reg50_reg51 ({reg50},{reg51})
 str_auto_reg10 {reg10}
 str_auto_reg0 {reg0}
 str_auto_reg11_reg10_reg12 {!}{reg11}({reg10}+{reg12})
+str_auto_sub_reg11_reg10_reg12 {!}{reg11}({reg10}-{reg12})
 str_auto_reg10_simple {!}{reg10}
 str_auto_s1_s2 {s1}^^{s2}
 str_auto_plus +

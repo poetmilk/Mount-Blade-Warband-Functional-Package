@@ -750,16 +750,26 @@
                 (assign, ":real_skill", reg0),
                 (call_script, "script_game_get_skill_modifier_for_troop", ":selected_troop", ":sub_idx"),
                 (assign, ":skill_bonus", reg0),
-                (store_sub, ":base_skill", ":real_skill", ":skill_bonus"),
-                # 颜色区分：有加成 橙 普通 黑
+                #(store_sub, ":base_skill", ":real_skill", ":skill_bonus"),
+                (call_script, "script_auto_get_troop_skill_real_level", ":selected_troop", ":sub_idx"),
+                (assign, ":base_skill", reg0),
+                # 颜色区分：有正加成 绿色 负加成红色 普通 黑
                 (try_begin),
-                    (ge, ":skill_bonus", 1),
+                    (gt, ":skill_bonus", 0),  # 大于0
                     (assign, ":text_color", 0x53e94b),
                     #(assign, ":text_color", 0xfff1a2),
                     (assign, reg10, ":base_skill"),
                     (assign, reg11, ":real_skill"),
                     (assign, reg12, ":skill_bonus"),
                     (str_store_string, s1, "str_auto_reg11_reg10_reg12"),
+                (else_try),
+                    (lt, ":skill_bonus", 0),  # 小于0
+                    (assign, ":text_color", 0xFF0000),
+                    (store_sub, ":neg_skill_bonus", 0, ":skill_bonus"),  # 将负数改成正
+                    (assign, reg10, ":base_skill"),
+                    (assign, reg11, ":real_skill"),
+                    (assign, reg12, ":neg_skill_bonus"),
+                    (str_store_string, s1, "str_auto_sub_reg11_reg10_reg12"),
                 (else_try),
                     (assign, ":text_color", 0xfff1a2),
                     (assign, reg10, ":base_skill"),
@@ -1832,6 +1842,7 @@
             (store_character_level, reg10, ":selected_troop"),
             (store_add, ":level_no", reg10, 1),
             (get_level_boundary, reg0, ":level_no"), # 计算升到level_no所需的经验值
+            (troop_get_xp, reg1, ":selected_troop"), # 添加当前troop的总经验值
             (overlay_set_text, ":skill_text_overlay", "str_auto_exp_info_intro"),  # 设置控件显示技能文本
             (assign, ":tmp_is_trigger", 1),
         (else_try),
