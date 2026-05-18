@@ -1116,11 +1116,17 @@
         (lt, ":skill_modifier_value", 0),  # 处理小于0的负向技能加成
         # 反向加点获取实际的技能点数
         (store_sub, ":neg_skill_modifier_value", 0, ":skill_modifier_value"),
+
+        # 计算加上故意增加的超过多少上限
+        (store_add, ":skill_limit_more", ":curr_skill", ":neg_skill_modifier_value"),
+        # 不能超过上限
+        (lt, ":skill_limit_more", ":skill_limit"),
+
         (troop_raise_skill, ":troop", ":skill_id", ":neg_skill_modifier_value"),  # 故意增加
         (store_skill_level, ":skill_real_level", ":skill_id", ":troop"), # 再获取技能等级，此时的技能点数就是真实的点数了 
         (troop_raise_skill, ":troop", ":skill_id", ":skill_modifier_value"),  # 把故意增加的减回去
     (else_try),
-        (neg|eq, ":curr_skill", ":skill_limit"),   # 如果技能等级不为满级，则正常进行获取真实点数
+        #(neg|eq, ":curr_skill", ":skill_limit"),   # 如果技能等级不为满级，则正常进行获取真实点数
         (store_sub, ":skill_real_level", ":curr_skill", ":skill_modifier_value"),
         (try_begin),  # 如果技能等级小于0，则取0
             (lt, ":skill_real_level", 0),
